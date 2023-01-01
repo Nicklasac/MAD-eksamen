@@ -13,29 +13,24 @@ public class GameManager : MonoBehaviour
     public float countTimer = 5;
     public Text scoreText;
     public int score;
+    public Text HStext;
     // Start is called before the first frame update
     void Start()
     {
+       HStext.text = "HIGHSCORE: " + PlayerPrefs.GetInt("highscore");
         gameOverCountdown.gameObject.SetActive(false);
+        
         Time.timeScale = 0;
+         
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(player.isDead){
-            gameOverCountdown.gameObject.SetActive(true);
-            countTimer -= Time.unscaledDeltaTime;
-        }
-
-        gameOverCountdown.text = "Restarting in" + " " + (countTimer).ToString("0");
-
-       
-
-
-        if(countTimer <=0){
+         if(player.isDead){
             RestartGame();
         }
+       
     }
 
     public void StartGame(){
@@ -47,13 +42,21 @@ public class GameManager : MonoBehaviour
 
     public void GameOver(){
         
+         if (score > PlayerPrefs.GetInt("highscore"))
+        {
+        PlayerPrefs.SetInt("highscore",score);
+        }
         Time.timeScale = 0;
         
     }
 
     public void RestartGame(){
-        SceneManager.LoadScene(0);
+         
+       
+       SceneManager.LoadScene(0);
+        
     }
+    
 
     public void IncreaseScore(){
         score++;
